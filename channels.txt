@@ -405,31 +405,12 @@ https://nomawnoijl.gpcdn.net/akash/delicious/playlist.m3u8
 https://owrcovcrpy.gpcdn.net/bpk-tv/1720/output/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/T%20Sports.png" group-title="Live Cricket & Football",🔴 LIVE: BD vs IND Today
 https://new-live-link.com/match.m3u8
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%201%40.jpeg" group-title="Live Cricket & Football",Star Sports 1 (New)
-https://dmf1jy0p1rpwo.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/star-sports-1-hd/62e731ad-7998-4e4e-8f1a-a9b7e67a6e56/0.m3u8
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%202%40.jpeg" group-title="Live Cricket & Football",Star Sports 2 (New)
-https://dmf1jy0p1rpwo.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/star-sports-2-hd/ab5a1f10-47c7-4528-97f1-bc8c1f9e3c3e/0.m3u8
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/56e54462053b1b278b80b532c89c01f17e360fd5/Sony%20Sports%20Ten%201.png" group-title="Live Cricket & Football",Sony Ten 1 (Football)
-https://d1g8wgjurz8via.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/sony-ten-1-hd/9e0a1c5d-2e0c-4f4e-8d3c-3f4b5a6c7d8e/0.m3u8
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/0/00/Logo_of_Deepto_TV.svg/1200px-Logo_of_Deepto_TV.svg.png" group-title="Live Cricket & Football",Deepto TV (Live Sports)
-https://owrcovcrpy.gpcdn.net/bpk-tv/1711/output/index.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",Sports 18 Khel (Live Cricket)
-https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/sports18-khel/bbf7a7e4-8e4f-4f6e-9a5c-1f7d6b9e8f0a/0.m3u8
 #------------------- 📚 Educational (শিক্ষামূলক) -------------------
-#EXTINF:-1 tvg-logo="" group-title="Educational",Discovery Hindi
-https://d1g8wgjurz8via.cloudfront.net/bpk-tv/Discoverychannel2/default/manifest.mpd
-#EXTINF:-1 tvg-logo="" group-title="Educational",Discovery Bangla
-http://202.70.146.135:8000/play/a05z/index.m3u8
 #EXTINF:-1 tvg-logo="" group-title="Educational",Animal Planet HD
 https://tiger-hub.vercel.app@vodzong.mjunoon.tv:8087/streamtest/Animal-Planet-158-3/playlist.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Educational",Nat Geo HD
-http://103.229.254.25:7001/play/a038/index.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Educational",History TV 18
-http://103.229.254.25:7001/play/a02z/index.m3u8
 #EXTINF:-1 tvg-logo="" group-title="Educational",BBC Earth
 https://d3u3pfhhvuad9k.cloudfront.net/playlist/amg00793-bbcstudios-bbcearta-lgus/playlist.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Educational",CGTN Documentary
-https://livedoc.cgtn.com/1000d/prog_index.m3u8
 #EXTINF:-1 tvg-logo="" group-title="Educational",Love Nature
 https://cdn1.logichost.in/ajmantv/live/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="Educational",Wild Earth
@@ -452,18 +433,8 @@ https://cdn-uw2-prod.tsv2.amagi.tv/linear/amgi-hd/zaykatv/playlist.m3u8
 https://d6xmgmtqcn8ej.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/sanjeev-kapoor-khazana/6c0c2f7b-6982-4e28-a1c7-8f5b8b1e4c8b/0.m3u8
 
 #------------------- 🎨 Kids/Anime (কার্টুন বা অ্যানিমে) -------------------
-#EXTINF:-1 tvg-logo="" group-title="Kids/Anime",Sony YAY!
-https://d6xmgmtqcn8ej.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/sony-yay/4c1f2b3d-5e6f-7a8b-9c0d-1e2f3a4b5c6d/0.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Kids/Anime",Marvel HQ
-https://d6xmgmtqcn8ej.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/marvel-hq/a1b2c3d4-e5f6-7890-abcd-ef1234567890/0.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Kids/Anime",Cartoon Network Hindi
-https://d6xmgmtqcn8ej.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/cartoon-network-hd/11223344-5566-7788-99aa-bbccddeeff00/0.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Kids/Anime",Pogo TV
-https://d6xmgmtqcn8ej.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/pogo/12345678-90ab-cdef-1234-567890abcdef/0.m3u8
 #EXTINF:-1 tvg-logo="" group-title="Kids/Anime",ZB Cartoon
 https://server.zillarbarta.com/zbcatun/video.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Kids/Anime",Duck TV
-https://d2lmgfyblo9rak.cloudfront.net/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="Kids/Anime",Jungle Book
 https://cc-4bhi5osabejc9.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-4bhi5osabejc9/junglebook.m3u8
 #EXTINF:-1 tvg-logo="" group-title="Kids/Anime",Tom & Jerry
