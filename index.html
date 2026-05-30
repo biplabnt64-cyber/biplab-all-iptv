@@ -64,8 +64,9 @@ video { width:100%; display:block; }
 .channel-card img { max-width:100%; max-height:48px; object-fit:contain; }
 .channel-card .card-name { font-size:9px; color:#aaa; text-align:center; line-height:1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 .channel-card.active .card-name { color:var(--neon-green); }
-.mobile-fav { position: absolute; top: 4px; right: 4px; background: none; border: none; font-size: 12px; cursor: pointer; color: white; z-index: 2; }
-.mobile-fav.is-fav { color: var(--neon-pink); }
+/* Made Mobile Fav Button Easier to Tap */
+.mobile-fav { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; font-size: 16px; cursor: pointer; color: white; z-index: 2; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.mobile-fav.is-fav { color: var(--neon-pink); background: rgba(255,0,255,0.2); }
 .footer { text-align:center; padding:9px; border-top:2px solid rgba(255,0,68,0.25); font-size:13px; color:#555; background:var(--bg-panel); flex-shrink:0; }
 .footer span { color:var(--neon-cyan); }
 @media(max-width:768px) { .sidebar { display:none; } .app-wrapper { flex-direction:column; height:auto; min-height:calc(100vh - 58px); } .main-content { overflow:visible; } .kbd-hint { display:none; } .transport { padding:8px 10px; gap:8px; } .t-btn { width:42px; height:42px; font-size:16px; } .t-btn.play-btn { width:48px; height:48px; font-size:20px; } }
@@ -123,10 +124,13 @@ function initPlayer() {
   var favorites = safeGet('iptv_fav', []);
   var recent = safeGet('iptv_rec', []);
 
-  // Stealth Trick: Hiding the external link using Base64 so Google bot can't read it
+  // FIX: Clear old string-based favorites that were causing bugs
+  if (favorites.length > 0 && typeof favorites[0] === 'string') {
+    favorites = [];
+    safeSet('iptv_fav', favorites);
+  }
+
   var hiddenLink = atob("aHR0cHM6Ly9yYXcuZ2l0aHViYXVzZXJjb250ZW50LmNvbS9SYWtpYjQ5L1Jha2liaXB0di9yZWZzL2hlYWRzL21haW4vYXluYW90dC5tM3U=");
-  
-  // Renamed from playlist.m3u to channels.txt
   var sources = ["channels.txt", hiddenLink];
 
   function parseList(text) {
@@ -163,14 +167,15 @@ function initPlayer() {
     document.getElementById('mobileGroup').innerHTML = html;
   }
 
+  // FIX: Mobile Category Selection was being overwritten
   window.applyFilters = function() {
     var sideQ = document.getElementById('sideSearch').value.toLowerCase();
     var mobQ = document.getElementById('mobileSearch').value.toLowerCase();
     var sideGrp = document.getElementById('sideGroup').value;
-    document.getElementById('mobileGroup').value = sideGrp;
-    document.getElementById('sideGroup').value = sideGrp;
+    var mobGrp = document.getElementById('mobileGroup').value;
+    
     buildSidebar(sideGrp, sideQ);
-    buildGrid(sideGrp, mobQ);
+    buildGrid(mobGrp, mobQ); // Now using mobile's own group selection
   }
 
   function getFilteredList(group, query) {
@@ -222,7 +227,11 @@ function initPlayer() {
     recent = recent.filter(function(r) { return r !== idx; }); recent.unshift(idx); if(recent.length > 15) recent.pop(); safeSet('iptv_rec', recent); applyFilters(); 
   }
 
-  window.toggleFav = function(idx) { if (favorites.indexOf(idx) !== -1) favorites = favorites.filter(function(i) { return i !== idx; }); else favorites.push(idx); safeSet('iptv_fav', favorites); applyFilters(); }
+  window.toggleFav = function(idx) { 
+    if (favorites.indexOf(idx) !== -1) favorites = favorites.filter(function(i) { return i !== idx; }); else favorites.push(idx); 
+    safeSet('iptv_fav', favorites); applyFilters(); 
+  }
+  
   window.nextChannel = function() { play((current + 1) % channels.length); };
   window.prevChannel = function() { play((current - 1 + channels.length) % channels.length); };
   window.togglePlay  = function() { if (vid.paused) vid.play(); else vid.pause(); };
