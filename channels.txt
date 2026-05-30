@@ -424,14 +424,6 @@ https://cdn-uw2-prod.tsv2.amagi.tv/linear/amgi-hd/gyantv/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="Tech",India Today Tech
 https://amg01448-samsungin-indiatoday-samsungin-ad-jucj.amagi.tv/playlist/amg01448-samsungin-indiatoday-samsungin/playlist.m3u8
 
-#------------------- 🍳 Cooking (রান্না) -------------------
-#EXTINF:-1 tvg-logo="" group-title="Cooking",Food Food
-http://103.175.73.12:8080/live/143/143_0.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Cooking",Zayka TV
-https://cdn-uw2-prod.tsv2.amagi.tv/linear/amgi-hd/zaykatv/playlist.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Cooking",Sanjeev Kapoor Khazana
-https://d6xmgmtqcn8ej.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/sanjeev-kapoor-khazana/6c0c2f7b-6982-4e28-a1c7-8f5b8b1e4c8b/0.m3u8
-
 #------------------- 🎨 Kids/Anime (কার্টুন বা অ্যানিমে) -------------------
 #EXTINF:-1 tvg-logo="" group-title="Kids/Anime",ZB Cartoon
 https://server.zillarbarta.com/zbcatun/video.m3u8
