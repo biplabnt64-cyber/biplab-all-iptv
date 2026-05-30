@@ -405,3 +405,13 @@ https://nomawnoijl.gpcdn.net/akash/delicious/playlist.m3u8
 https://owrcovcrpy.gpcdn.net/bpk-tv/1720/output/index.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/T%20Sports.png" group-title="Live Cricket & Football",🔴 LIVE: BD vs IND Today
 https://new-live-link.com/match.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%201%40.jpeg" group-title="Live Cricket & Football",Star Sports 1 (New)
+https://dmf1jy0p1rpwo.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/star-sports-1-hd/62e731ad-7998-4e4e-8f1a-a9b7e67a6e56/0.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%202%40.jpeg" group-title="Live Cricket & Football",Star Sports 2 (New)
+https://dmf1jy0p1rpwo.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/star-sports-2-hd/ab5a1f10-47c7-4528-97f1-bc8c1f9e3c3e/0.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/56e54462053b1b278b80b532c89c01f17e360fd5/Sony%20Sports%20Ten%201.png" group-title="Live Cricket & Football",Sony Ten 1 (Football)
+https://d1g8wgjurz8via.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/sony-ten-1-hd/9e0a1c5d-2e0c-4f4e-8d3c-3f4b5a6c7d8e/0.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/0/00/Logo_of_Deepto_TV.svg/1200px-Logo_of_Deepto_TV.svg.png" group-title="Live Cricket & Football",Deepto TV (Live Sports)
+https://owrcovcrpy.gpcdn.net/bpk-tv/1711/output/index.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",Sports 18 Khel (Live Cricket)
+https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/sports18-khel/bbf7a7e4-8e4f-4f6e-9a5c-1f7d6b9e8f0a/0.m3u8
