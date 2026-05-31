@@ -132,6 +132,13 @@ function initPlayer() {
 
   if (favorites.length > 0 && typeof favorites[0] === 'string') { favorites = []; safeSet('iptv_fav', favorites); }
 
+  // ✅ Live Match চ্যানেল সরাসরি এখানে যোগ করা হয়েছে
+  var liveMatchChannels = [
+    { name: 'IPL Live (Sony Ten Sports)', url: 'http://198.195.239.50:8095/SonyTenSports5/tracks-v1a1/mono.m3u8', logo: '', group: 'Live Match' },
+    { name: 'Star Sports 1 HD (Live Match)', url: 'http://tvn1.chowdhury-shaheb.com/starsport1/index.m3u8', logo: 'https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%201%40.jpeg', group: 'Live Match' }
+  ];
+  channels.push.apply(channels, liveMatchChannels);
+
   var sources = ["https://raw.githubusercontent.com/biplabnt64-cyber/biplab-all-iptv/main/channels.txt"];
 
   function parseList(text) {
@@ -177,9 +184,9 @@ function initPlayer() {
     buildGrid(mobGrp, mobQ);
   }
 
-  // ✅ FIX: "Live Match" → "Sports" (M3U তে group-title="Sports" আছে)
+  // ✅ Live Match বাটন — সরাসরি Live Match group সিলেক্ট করে প্রথম channel play করে
   window.goToLiveMatch = function() {
-    var LIVE_GROUP = "Sports"; // আপনার M3U-তে Sports group-এ T Sports, Star Sports আছে
+    var LIVE_GROUP = "Live Match";
     var sideGroup = document.getElementById('sideGroup');
     var mobileGroup = document.getElementById('mobileGroup');
 
@@ -190,8 +197,6 @@ function initPlayer() {
     var liveChannels = getFilteredList(LIVE_GROUP, "");
     if (liveChannels.length > 0) {
       play(channels.indexOf(liveChannels[0]));
-    } else {
-      alert("Sports channels লোড হচ্ছে, একটু অপেক্ষা করুন...");
     }
   };
 
