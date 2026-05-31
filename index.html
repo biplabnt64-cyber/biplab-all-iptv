@@ -1,287 +1,629 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rahmatullah Media Player</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<style>
-:root { --neon-cyan: #00ffff; --neon-pink: #ff00ff; --neon-green: #00ff88; --neon-red: #ff2244; --bg-dark: #050508; --bg-card: #0d0d14; --bg-panel: #0a0a10; }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--bg-dark); color:white; font-family:'Rajdhani',sans-serif; min-height:100vh; }
-.header { background:var(--bg-panel); border-top:3px solid var(--neon-red); border-bottom:2px solid rgba(255,0,68,0.3); padding:12px 20px; display:flex; align-items:center; justify-content:center; gap: 15px; flex-wrap: wrap; }
-.header h1 { font-family:'Orbitron',sans-serif; font-size:clamp(16px,4vw,28px); background:linear-gradient(90deg,#00ffff,#00ff88,#ff00ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:hueRotate 4s linear infinite; letter-spacing:2px; }
-.live-match-btn { background: linear-gradient(90deg, #ff0044, #ff00ff); color: white; border: none; padding: 10px 22px; font-size: 15px; font-family: 'Orbitron', sans-serif; font-weight: bold; border-radius: 25px; cursor: pointer; animation: pulse 1.5s infinite; display: flex; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 0 15px rgba(255,0,68,0.5); }
-.live-match-btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255,0,68,0.8); }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 34, 68, 0.7); } 70% { box-shadow: 0 0 0 12px rgba(255, 34, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 34, 68, 0); } }
-@keyframes hueRotate { 0%{filter:hue-rotate(0deg);} 100%{filter:hue-rotate(360deg);} }
-.app-wrapper { display:flex; height:calc(100vh - 58px); }
-.sidebar { width:280px; min-width:280px; background:var(--bg-panel); border-right:1px solid rgba(0,255,255,0.12); display:flex; flex-direction:column; overflow:hidden; }
-.sidebar-controls { padding:10px; border-bottom:1px solid rgba(0,255,255,0.1); display: flex; flex-direction: column; gap: 8px; }
-.search-group { width:100%; padding:9px 13px; font-size:13px; border-radius:8px; background:rgba(0,255,255,0.05); color:white; border:1px solid rgba(0,255,255,0.3); outline:none; font-family:'Rajdhani',sans-serif; }
-.search-group:focus { border-color:var(--neon-cyan); }
-select.search-group { appearance: none; cursor: pointer; }
-select.search-group option { background: #111; color: white; }
-.sidebar-list { flex:1; overflow-y:auto; padding:6px; scrollbar-width:thin; scrollbar-color:rgba(0,255,255,0.3) transparent; }
-.sidebar-list::-webkit-scrollbar { width:4px; }
-.sidebar-list::-webkit-scrollbar-thumb { background:rgba(0,255,255,0.3); border-radius:2px; }
-.sidebar-channel { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:10px; cursor:pointer; transition:background 0.2s; margin-bottom:3px; position: relative; }
-.sidebar-channel:hover { background:rgba(0,255,255,0.08); }
-.sidebar-channel.active { background:rgba(0,255,136,0.1); box-shadow:inset 3px 0 0 var(--neon-green); }
-.sidebar-channel img, .sidebar-channel .no-logo { width:42px; height:42px; object-fit:contain; background:#111; border-radius:7px; padding:2px; flex-shrink:0; }
-.sidebar-channel .ch-name { font-size:13px; color:#ccc; flex:1; line-height:1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 25px; }
-.sidebar-channel.active .ch-name { color:var(--neon-green); font-weight:600; }
-.fav-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 0 5px; color: white; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 2; }
-.fav-btn:hover { transform: translateY(-50%) scale(1.3); }
-.fav-btn.is-fav { color: var(--neon-pink); }
-.main-content { flex:1; display:flex; flex-direction:column; overflow:hidden; }
-.player-wrap { position:relative; background:#000; flex-shrink:0; }
-video { width:100%; display:block; }
-@media(min-width:769px) { video { height:55vh; max-height:55vh; } }
-@media(max-width:768px) { video { height:auto; max-height:56vw; min-height:180px; } }
-.loading-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.7); display:none; align-items:center; justify-content:center; z-index:5; flex-direction: column; gap: 10px; }
-.loading-overlay.show { display:flex; }
-.spinner { width:46px; height:46px; border:3px solid rgba(0,255,255,0.2); border-top-color:var(--neon-cyan); border-radius:50%; animation:spin 0.8s linear infinite; }
-.skip-text { font-size: 12px; color: var(--neon-red); }
-@keyframes spin { to{transform:rotate(360deg);} }
-.now-playing { background:rgba(0,0,0,0.9); padding:7px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(0,255,255,0.08); }
-.np-label { font-size:11px; color:var(--neon-cyan); font-family:'Orbitron',sans-serif; letter-spacing:1px; }
-.np-name { font-size:14px; color:#fff; font-weight:600; }
-.kbd-hint { font-size:11px; color:rgba(255,255,255,0.22); }
-.transport { background:var(--bg-panel); padding:10px 16px; display:flex; align-items:center; justify-content:center; gap:12px; border-bottom:1px solid rgba(255,0,68,0.15); flex-shrink:0; }
-.t-btn { width:48px; height:48px; border:none; border-radius:50%; background:rgba(255,34,68,0.12); color:white; font-size:18px; cursor:pointer; transition:all 0.2s; border:1px solid rgba(255,34,68,0.35); display:flex; align-items:center; justify-content:center; }
-.t-btn:hover { background:var(--neon-red); transform:scale(1.1); box-shadow:0 0 18px rgba(255,34,68,0.5); }
-.t-btn.play-btn { width:56px; height:56px; font-size:22px; background:rgba(255,0,255,0.12); border-color:rgba(255,0,255,0.4); }
-.t-btn.play-btn:hover { background:var(--neon-pink); box-shadow:0 0 22px rgba(255,0,255,0.5); }
-.t-btn.pip-btn { background:rgba(0,255,255,0.12); border-color:rgba(0,255,255,0.35); font-size: 20px;}
-.t-btn.pip-btn:hover { background:var(--neon-cyan); color: black; box-shadow:0 0 18px rgba(0,255,255,0.5);}
-.mobile-section { display:flex; flex:1; flex-direction:column; overflow:hidden; }
-.mobile-controls { padding:9px 11px; background:var(--bg-panel); border-bottom:1px solid rgba(0,255,255,0.1); display: flex; flex-direction: column; gap: 8px;}
-.channel-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; padding:9px; overflow-y:auto; flex:1; scrollbar-width:thin; scrollbar-color:rgba(0,255,255,0.3) transparent; }
-@media(min-width:769px) { .channel-grid { grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); } }
-.channel-card { background:var(--bg-card); border-radius:11px; padding:7px; height:95px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; transition:all 0.2s; border:1px solid rgba(255,255,255,0.05); gap:4px; position: relative; }
-.channel-card:hover { transform:scale(1.05); box-shadow:0 0 14px rgba(255,0,255,0.3); }
-.channel-card.active { box-shadow:0 0 18px rgba(0,255,136,0.4); border-color:var(--neon-green); }
-.channel-card img, .channel-card .no-logo { max-width:100%; max-height:48px; object-fit:contain; }
-.channel-card .card-name { font-size:9px; color:#aaa; text-align:center; line-height:1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
-.channel-card.active .card-name { color:var(--neon-green); }
-.mobile-fav { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); border: none; font-size: 16px; cursor: pointer; color: white; z-index: 2; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-.mobile-fav.is-fav { color: var(--neon-pink); background: rgba(255,0,255,0.2); }
-.footer { text-align:center; padding:9px; border-top:2px solid rgba(255,0,68,0.25); font-size:13px; color:#555; background:var(--bg-panel); flex-shrink:0; }
-.footer span { color:var(--neon-cyan); }
-@media(max-width:768px) { .sidebar { display:none; } .app-wrapper { flex-direction:column; height:auto; min-height:calc(100vh - 58px); } .main-content { overflow:visible; } .kbd-hint { display:none; } .transport { padding:8px 10px; gap:8px; } .t-btn { width:42px; height:42px; font-size:16px; } .t-btn.play-btn { width:48px; height:48px; font-size:20px; } }
-.no-logo { background: linear-gradient(135deg, #1a1a2e, #16213e); color: var(--neon-cyan); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; font-family: 'Orbitron', sans-serif; border-radius: 7px; }
-.channel-card .no-logo { font-size: 24px; width: 100%; height: 48px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biplab TV - Live Streaming</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1a1a2e; }
+    ::-webkit-scrollbar-thumb { background: #e53e3e; border-radius: 3px; }
+
+    .hero-bg {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 30%, #0a0a2e 60%, #0a0a0a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(229,62,62,0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 30%, rgba(59,130,246,0.06) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 80%, rgba(229,62,62,0.04) 0%, transparent 50%);
+      animation: bgPulse 8s ease-in-out infinite;
+    }
+    @keyframes bgPulse {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.05) rotate(2deg); }
+    }
+
+    @keyframes livePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(229,62,62,0.7); }
+      50% { box-shadow: 0 0 0 10px rgba(229,62,62,0); }
+    }
+    .live-dot { animation: livePulse 1.5s infinite; }
+
+    @keyframes glowBorder {
+      0%, 100% { border-color: rgba(229,62,62,0.5); box-shadow: 0 0 15px rgba(229,62,62,0.2); }
+      50% { border-color: rgba(229,62,62,1); box-shadow: 0 0 30px rgba(229,62,62,0.4); }
+    }
+    .glow-card { animation: glowBorder 3s ease-in-out infinite; }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .shimmer-text {
+      background: linear-gradient(90deg, #fff 0%, #e53e3e 25%, #fff 50%, #3b82f6 75%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+
+    .video-wrapper {
+      position: relative;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+    }
+    .video-wrapper video {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .channel-card {
+      background: linear-gradient(145deg, #1a1a2e, #16162a);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+    }
+    .channel-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: rgba(229,62,62,0.5);
+      box-shadow: 0 20px 40px rgba(229,62,62,0.15);
+    }
+    .channel-card.active {
+      border-color: #e53e3e;
+      box-shadow: 0 0 30px rgba(229,62,62,0.3);
+    }
+
+    .tab-btn {
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .tab-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #e53e3e, #c53030);
+      color: #fff;
+      border-color: #e53e3e;
+      box-shadow: 0 4px 15px rgba(229,62,62,0.4);
+    }
+
+    .ipl-badge {
+      background: linear-gradient(135deg, #e53e3e, #ff6b6b);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid rgba(229,62,62,0.2);
+      border-top-color: #e53e3e;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes floatBall {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-15px) rotate(90deg); }
+      50% { transform: translateY(-5px) rotate(180deg); }
+      75% { transform: translateY(-20px) rotate(270deg); }
+    }
+    .float-ball { animation: floatBall 6s ease-in-out infinite; }
+
+    .toast {
+      position: fixed;
+      bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: linear-gradient(135deg, #1a1a2e, #2a2a4e);
+      border: 1px solid rgba(229,62,62,0.5);
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 9999;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .nav-glass {
+      background: rgba(10,10,10,0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .fs-btn {
+      position: absolute;
+      bottom: 12px; right: 12px;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 10;
+    }
+    .fs-btn:hover { background: rgba(229,62,62,0.8); border-color: #e53e3e; }
+
+    .vol-control {
+      position: absolute;
+      bottom: 12px; left: 12px;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(0,0,0,0.7);
+      padding: 6px 12px;
+      border-radius: 8px;
+      z-index: 10;
+    }
+    .vol-control input[type="range"] {
+      width: 80px; height: 4px;
+      -webkit-appearance: none;
+      background: rgba(255,255,255,0.3);
+      border-radius: 2px;
+      outline: none;
+    }
+    .vol-control input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px; height: 14px;
+      background: #e53e3e;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .status-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 8px 14px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 10; font-size: 12px;
+    }
+
+    .link-copy-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.5);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .link-copy-btn:hover {
+      background: rgba(229,62,62,0.2);
+      border-color: rgba(229,62,62,0.5);
+      color: #e53e3e;
+    }
+  </style>
 </head>
-<body>
-<div class="header">
-  <h1>⚡ Developed by Biplab</h1>
-  <button class="live-match-btn" onclick="goToLiveMatch()">🔴 LIVE MATCH</button>
-</div>
-<div class="app-wrapper">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-controls">
-      <select id="sideGroup" class="search-group" onchange="applyFilters()"><option value="all">All Categories</option></select>
-      <input type="text" id="sideSearch" class="search-group" placeholder="🔍 সার্চ করুন..." oninput="applyFilters()">
-    </div>
-    <div class="sidebar-list" id="sidebarList"></div>
-  </aside>
-  <div class="main-content">
-    <div class="player-wrap">
-      <video id="video" autoplay controls playsinline></video>
-      <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div class="skip-text" id="skipText">Loading...</div></div>
-    </div>
-    <div class="now-playing">
-      <div><div class="np-label">NOW PLAYING</div><div class="np-name" id="nowPlayingName">—</div></div>
-      <div class="kbd-hint">← → Arrow keys | Space = Play/Pause</div>
-    </div>
-    <div class="transport">
-      <button class="t-btn" onclick="prevChannel()" title="Previous">⏮</button>
-      <button class="t-btn play-btn" onclick="togglePlay()" title="Play/Pause">⏯</button>
-      <button class="t-btn" onclick="nextChannel()" title="Next">⏭</button>
-      <button class="t-btn pip-btn" onclick="togglePiP()" title="Picture-in-Picture">🖼️</button>
-    </div>
-    <div class="mobile-section">
-      <div class="mobile-controls">
-        <select id="mobileGroup" class="search-group" onchange="applyFilters()"><option value="all">All Categories</option></select>
-        <input type="text" id="mobileSearch" class="search-group" placeholder="🔍 সার্চ করুন..." oninput="applyFilters()">
+<body class="hero-bg min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="nav-glass sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center font-black text-lg shadow-lg shadow-red-500/30">B</div>
+          <div>
+            <span class="text-lg font-bold tracking-tight">Biplab</span>
+            <span class="text-lg font-bold text-red-500 tracking-tight">TV</span>
+            <div class="text-[9px] uppercase tracking-[3px] text-gray-500 -mt-1">Stream Live</div>
+          </div>
+        </div>
+        <div class="hidden sm:flex items-center gap-2">
+          <a href="#live" class="tab-btn active" onclick="switchTab(this)">
+            <span class="inline-block w-2 h-2 bg-red-500 rounded-full mr-2 live-dot"></span>Live
+          </a>
+          <a href="#channels" class="tab-btn" onclick="switchTab(this)">Channels</a>
+          <a href="https://biplab-tv-app.vercel.app/" target="_blank" class="tab-btn flex items-center gap-2">
+            All IP TV
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+        </div>
+        <button onclick="toggleMobileMenu()" class="sm:hidden text-white p-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
       </div>
-      <div class="channel-grid" id="channelGrid"></div>
     </div>
-    <div class="footer">© 2026 Media Player | <span>Developed by Biplab</span></div>
+    <div id="mobileMenu" class="sm:hidden hidden bg-[#0f0f1f] border-t border-white/5 px-4 py-3 space-y-2">
+      <a href="#live" class="block py-2 px-4 rounded-lg text-sm font-medium text-red-400 bg-red-500/10">🔴 Live Now</a>
+      <a href="#channels" class="block py-2 px-4 rounded-lg text-sm font-medium text-gray-400 hover:text-white">📺 Channels</a>
+      <a href="https://biplab-tv-app.vercel.app/" target="_blank" class="block py-2 px-4 rounded-lg text-sm font-medium text-gray-400 hover:text-white">🌐 All IP TV ↗</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative pt-10 pb-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="text-center reveal" id="heroReveal">
+      <div class="float-ball inline-block mb-4 text-5xl">🏏</div>
+      <h1 class="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight mb-3">
+        <span class="shimmer-text">IPL LIVE</span>
+      </h1>
+      <p class="text-gray-400 text-base sm:text-lg max-w-xl mx-auto mb-6">
+        আপনার প্রিয় ম্যাচ লাইভ দেখুন Biplab TV-তে। কোনো বাধা নেই, কোনো টাকা নেই — শুধু পিওর ক্রিকেট!
+      </p>
+      <div class="flex items-center justify-center gap-3 flex-wrap">
+        <span class="ipl-badge inline-flex items-center gap-1">
+          <span class="w-1.5 h-1.5 bg-white rounded-full live-dot"></span> LIVE NOW
+        </span>
+        <span class="text-xs text-gray-500 uppercase tracking-wider">IPL 2025 • Final Season</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Player Section -->
+  <section id="live" class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-10">
+    <div class="reveal" id="playerReveal">
+      <div class="channel-card glow-card p-1 sm:p-2 mb-6">
+        <div class="video-wrapper" id="videoContainer">
+          <div class="status-bar">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-red-500 rounded-full live-dot"></span>
+              <span class="text-red-400 font-semibold" id="channelName">Select a Channel</span>
+            </div>
+            <span class="text-gray-400" id="streamStatus">Waiting...</span>
+          </div>
+          <video id="videoPlayer" playsinline></video>
+          <div id="loadingOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-20 hidden">
+            <div class="spinner mb-4"></div>
+            <p class="text-sm text-gray-400">Loading Stream...</p>
+          </div>
+          <div id="errorOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-20 hidden">
+            <div class="text-5xl mb-4">📺</div>
+            <p class="text-red-400 font-semibold mb-2" id="errorMsg">Stream Unavailable</p>
+            <p class="text-gray-500 text-sm mb-4">The stream may be offline or geo-restricted</p>
+            <button onclick="retryStream()" class="px-5 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-semibold transition-colors">Retry</button>
+          </div>
+          <div id="welcomeOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-20">
+            <div class="text-6xl mb-4">🏏</div>
+            <p class="text-xl font-bold mb-2">IPL Live on Biplab TV</p>
+            <p class="text-gray-400 text-sm">নিচের চ্যানেল সিলেক্ট করুন লাইভ ম্যাচ দেখতে</p>
+          </div>
+          <div class="vol-control" id="volControl" style="display:none;">
+            <svg class="w-4 h-4 text-white/70" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.8" oninput="changeVolume(this.value)">
+          </div>
+          <button class="fs-btn" id="fsBtn" onclick="toggleFullscreen()" style="display:none;" title="Fullscreen">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Channel Selection -->
+      <div class="mb-4">
+        <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 bg-red-500 rounded-full live-dot"></span>
+          Select Channel
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="channelGrid">
+
+          <!-- Channel 1: Sony Ten -->
+          <div class="channel-card p-4 flex items-center gap-4" onclick="playChannel(0)" id="ch0">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-blue-900 flex items-center justify-center flex-shrink-0">
+              <span class="text-xl font-black text-white">ST</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="font-bold text-sm truncate">Sony Ten Sports 5</h3>
+                <span class="ipl-badge text-[8px]">LIVE</span>
+              </div>
+              <p class="text-xs text-gray-500 truncate">IPL Live • Sony Ten Network</p>
+              <div class="mt-1.5 flex items-center gap-2">
+                <span class="text-[10px] text-gray-600 truncate max-w-[180px]" id="link0">http://198.195.239.50:8095/...</span>
+                <button class="link-copy-btn" onclick="event.stopPropagation(); copyLink(0)">Copy</button>
+              </div>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0 hover:bg-red-600 transition-colors">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+
+          <!-- Channel 2: Star Sports 1 HD -->
+          <div class="channel-card p-4 flex items-center gap-4" onclick="playChannel(1)" id="ch1">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-red-600 to-orange-700 flex items-center justify-center flex-shrink-0 overflow-hidden">
+              <img src="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%201%40.jpeg" alt="Star Sports" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xl font-black text-white\'>SS</span>'">
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="font-bold text-sm truncate">Star Sports 1 HD</h3>
+                <span class="ipl-badge text-[8px]">LIVE</span>
+              </div>
+              <p class="text-xs text-gray-500 truncate">IPL Live Match • Star Network</p>
+              <div class="mt-1.5 flex items-center gap-2">
+                <span class="text-[10px] text-gray-600 truncate max-w-[180px]" id="link1">http://tvn1.chowdhury-shaheb.com/...</span>
+                <button class="link-copy-btn" onclick="event.stopPropagation(); copyLink(1)">Copy</button>
+              </div>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0 hover:bg-red-600 transition-colors">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- All IP TV Section -->
+  <section id="channels" class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16">
+    <div class="reveal" id="iptvReveal">
+      <div class="channel-card p-6 sm:p-8 text-center">
+        <div class="text-4xl mb-4">🌐</div>
+        <h2 class="text-2xl sm:text-3xl font-black mb-3 tracking-tight">All IP TV Channels</h2>
+        <p class="text-gray-400 text-sm sm:text-base max-w-md mx-auto mb-6">
+          Biplab TV অ্যাপে সব আইপি টিভি চ্যানেল পাবেন। স্পোর্টস, এন্টারটেইনমেন্ট, নিউজ — সব এক জায়গায়!
+        </p>
+        <a href="https://biplab-tv-app.vercel.app/" target="_blank"
+           class="inline-flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:scale-105">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          Open Biplab TV App
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Match Info Section -->
+  <section class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16">
+    <div class="reveal" id="infoReveal">
+      <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-6 flex items-center gap-2">
+        🏏 IPL 2025 Info
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="channel-card p-5">
+          <div class="text-3xl mb-3">🏆</div>
+          <h3 class="font-bold text-base mb-1">IPL Final</h3>
+          <p class="text-gray-500 text-xs">Season 2025 • Grand Finale</p>
+        </div>
+        <div class="channel-card p-5">
+          <div class="text-3xl mb-3">📺</div>
+          <h3 class="font-bold text-base mb-1">2 Live Channels</h3>
+          <p class="text-gray-500 text-xs">Sony Ten & Star Sports HD</p>
+        </div>
+        <div class="channel-card p-5">
+          <div class="text-3xl mb-3">🔴</div>
+          <h3 class="font-bold text-base mb-1">Real-Time Streaming</h3>
+          <p class="text-gray-500 text-xs">HLS Protocol • Adaptive Quality</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-8 px-4">
+    <div class="max-w-7xl mx-auto text-center">
+      <div class="flex items-center justify-center gap-2 mb-3">
+        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center font-black text-xs">B</div>
+        <span class="font-bold">Biplab<span class="text-red-500">TV</span></span>
+      </div>
+      <p class="text-gray-600 text-xs mb-2">Free Live Streaming Platform</p>
+      <p class="text-gray-700 text-[10px]">© 2025 Biplab TV. All rights reserved. Streams sourced from third-party providers.</p>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span id="toastMsg">Message</span>
   </div>
-</div>
 
-<script>
-function safeGet(key, def) { try { return JSON.parse(localStorage.getItem(key)) || def; } catch(e) { return def; } }
-function safeSet(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
+  <script>
+    // ====== চ্যানেল লিংক এখানে ======
+    const channels = [
+      {
+        name: 'IPL Live (Sony Ten)',
+        url: 'http://198.195.239.50:8095/SonyTenSports5/tracks-v1a1/mono.m3u8',
+        logo: null
+      },
+      {
+        name: 'Star Sports 1 HD (Live Match)',
+        url: 'http://tvn1.chowdhury-shaheb.com/starsport1/index.m3u8',
+        logo: 'https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%201%40.jpeg'
+      }
+    ];
 
-initPlayer();
+    let currentChannel = -1;
+    let hls = null;
+    const video = document.getElementById('videoPlayer');
 
-function initPlayer() {
-  var channels = [];
-  var current = 0;
-  var hlsInstance = null;
-  var vid = document.getElementById('video');
-  var autoSkipTimer = null;
-  var skipOrigin = -1;
-  var favorites = safeGet('iptv_fav', []);
-  var recent = safeGet('iptv_rec', []);
+    // Play Channel
+    function playChannel(index) {
+      currentChannel = index;
+      const channel = channels[index];
 
-  if (favorites.length > 0 && typeof favorites[0] === 'string') { favorites = []; safeSet('iptv_fav', favorites); }
+      document.getElementById('channelName').textContent = channel.name;
+      document.getElementById('welcomeOverlay').classList.add('hidden');
+      document.getElementById('errorOverlay').classList.add('hidden');
+      document.getElementById('loadingOverlay').classList.remove('hidden');
+      document.getElementById('streamStatus').textContent = 'Connecting...';
+      document.getElementById('volControl').style.display = 'flex';
+      document.getElementById('fsBtn').style.display = 'flex';
 
-  // ✅ Live Match চ্যানেল সরাসরি এখানে যোগ করা হয়েছে
-  var liveMatchChannels = [
-    { name: 'IPL Live (Sony Ten Sports)', url: 'http://198.195.239.50:8095/SonyTenSports5/tracks-v1a1/mono.m3u8', logo: '', group: 'Live Match' },
-    { name: 'Star Sports 1 HD (Live Match)', url: 'http://tvn1.chowdhury-shaheb.com/starsport1/index.m3u8', logo: 'https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%201%40.jpeg', group: 'Live Match' }
-  ];
-  channels.push.apply(channels, liveMatchChannels);
+      document.querySelectorAll('#channelGrid .channel-card').forEach((card, i) => {
+        card.classList.toggle('active', i === index);
+      });
 
-  var sources = ["https://raw.githubusercontent.com/biplabnt64-cyber/biplab-all-iptv/main/channels.txt"];
+      if (hls) { hls.destroy(); hls = null; }
 
-  function parseList(text) {
-    var lines = text.split('\n');
-    for (var i = 0; i < lines.length; i++) {
-      if (lines[i].indexOf('#EXTINF') === 0) {
-        var name = lines[i].split(',').pop().trim();
-        var url  = (lines[i+1] || '').trim();
-        var logo = '', group = 'Uncategorized';
-        var m = lines[i].match(/tvg-logo="([^"]+)"/);
-        if (m) logo = m[1];
-        var g = lines[i].match(/group-title="([^"]+)"/);
-        if (g) group = g[1];
-        if (url && url.length > 5) channels.push({ name: name, url: url, logo: logo, group: group });
+      if (Hls.isSupported()) {
+        hls = new Hls({
+          enableWorker: true,
+          lowLatencyMode: true,
+          maxBufferLength: 30,
+          maxMaxBufferLength: 60,
+        });
+        hls.loadSource(channel.url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+          document.getElementById('loadingOverlay').classList.add('hidden');
+          document.getElementById('streamStatus').textContent = '● Live';
+          video.play().catch(e => console.log('Autoplay blocked:', e));
+          showToast('✅ ' + channel.name + ' লাইভ চলছে!');
+        });
+        hls.on(Hls.Events.ERROR, function(event, data) {
+          if (data.fatal) {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+            document.getElementById('errorOverlay').classList.remove('hidden');
+            document.getElementById('streamStatus').textContent = 'Error';
+            showToast('❌ Stream loading error!');
+            if (data.fatal === Hls.ErrorTypes.NETWORK_ERROR) {
+              document.getElementById('errorMsg').textContent = 'Network Error - Stream Unavailable';
+            } else if (data.fatal === Hls.ErrorTypes.MEDIA_ERROR) {
+              hls.recoverMediaError();
+            }
+          }
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = channel.url;
+        video.addEventListener('loadedmetadata', function() {
+          document.getElementById('loadingOverlay').classList.add('hidden');
+          document.getElementById('streamStatus').textContent = '● Live';
+          video.play();
+          showToast('✅ ' + channel.name + ' লাইভ চলছে!');
+        });
+        video.addEventListener('error', function() {
+          document.getElementById('loadingOverlay').classList.add('hidden');
+          document.getElementById('errorOverlay').classList.remove('hidden');
+          document.getElementById('streamStatus').textContent = 'Error';
+          showToast('❌ Stream loading error!');
+        });
+      } else {
+        document.getElementById('loadingOverlay').classList.add('hidden');
+        document.getElementById('errorOverlay').classList.remove('hidden');
+        document.getElementById('errorMsg').textContent = 'HLS Not Supported';
+        showToast('❌ Your browser does not support HLS!');
       }
     }
-  }
 
-  var fetchPromises = sources.map(function(url) {
-    return fetch(url).then(function(r) { return r.text(); }).then(function(txt) { parseList(txt); }).catch(function() {});
-  });
-
-  Promise.all(fetchPromises).then(function() { initializeApp(); });
-
-  function initializeApp() { populateGroups(); applyFilters(); if (channels.length) play(0); }
-
-  function populateGroups() {
-    var groups = [];
-    channels.forEach(function(c) { if (groups.indexOf(c.group) === -1) groups.push(c.group); });
-    groups.sort();
-    var html = '<option value="all">All Categories</option><option value="fav">❤️ Favorites</option><option value="recent">🕒 Recently Watched</option>';
-    groups.forEach(function(g) { html += '<option value="'+g+'">'+g+'</option>'; });
-    document.getElementById('sideGroup').innerHTML = html;
-    document.getElementById('mobileGroup').innerHTML = html;
-  }
-
-  window.applyFilters = function() {
-    var sideQ = document.getElementById('sideSearch').value.toLowerCase();
-    var mobQ = document.getElementById('mobileSearch').value.toLowerCase();
-    var sideGrp = document.getElementById('sideGroup').value;
-    var mobGrp = document.getElementById('mobileGroup').value;
-    buildSidebar(sideGrp, sideQ);
-    buildGrid(mobGrp, mobQ);
-  }
-
-  // ✅ Live Match বাটন — সরাসরি Live Match group সিলেক্ট করে প্রথম channel play করে
-  window.goToLiveMatch = function() {
-    var LIVE_GROUP = "Live Match";
-    var sideGroup = document.getElementById('sideGroup');
-    var mobileGroup = document.getElementById('mobileGroup');
-
-    sideGroup.value = LIVE_GROUP;
-    mobileGroup.value = LIVE_GROUP;
-    applyFilters();
-
-    var liveChannels = getFilteredList(LIVE_GROUP, "");
-    if (liveChannels.length > 0) {
-      play(channels.indexOf(liveChannels[0]));
+    // Copy Link
+    function copyLink(index) {
+      const url = channels[index].url;
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('📋 Link copied!');
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('📋 Link copied!');
+      });
     }
-  };
 
-  function getFilteredList(group, query) {
-    var list = channels;
-    if (group === 'fav') list = channels.filter(function(c, i) { return favorites.indexOf(i) !== -1; });
-    else if (group === 'recent') list = recent.map(function(r) { return channels[r]; }).filter(Boolean);
-    else if (group !== 'all') list = channels.filter(function(c) { return c.group === group; });
-    if (query) list = list.filter(function(c) { return c.name.toLowerCase().indexOf(query) !== -1; });
-    return list;
-  }
-  
-  window.imgError = function(el, name) {
-    var placeholder = document.createElement('div');
-    placeholder.className = 'no-logo';
-    placeholder.textContent = name.charAt(0).toUpperCase();
-    el.parentNode.replaceChild(placeholder, el);
-  };
+    // Retry
+    function retryStream() {
+      if (currentChannel >= 0) playChannel(currentChannel);
+    }
 
-  function buildSidebar(group, query) {
-    var container = document.getElementById('sidebarList'); container.innerHTML = '';
-    var filtered = getFilteredList(group, query);
-    if(filtered.length === 0) { container.innerHTML = '<div style="text-align:center;padding:20px;color:#555;">Not found</div>'; return; }
-    filtered.forEach(function(ch) {
-      var idx = channels.indexOf(ch); var isFav = favorites.indexOf(idx) !== -1; var el = document.createElement('div');
-      el.className = 'sidebar-channel' + (idx === current ? ' active' : '');
-      var logoHtml = ch.logo ? 
-          '<img src="'+ch.logo+'" alt="'+ch.name+'" onerror="imgError(this, \''+ch.name.replace(/'/g, "\\'")+'\')">' : 
-          '<div class="no-logo">'+ch.name.charAt(0).toUpperCase()+'</div>';
-      el.innerHTML = logoHtml + '<div class="ch-name">'+ch.name+'</div><button class="fav-btn '+(isFav ? 'is-fav' : '')+'" onclick="event.stopPropagation(); window.toggleFav('+idx+')">'+(isFav ? '❤️' : '🤍')+'</button>';
-      el.onclick = function() { play(idx); }; container.appendChild(el);
+    // Volume
+    function changeVolume(val) { video.volume = parseFloat(val); }
+
+    // Fullscreen
+    function toggleFullscreen() {
+      const container = document.getElementById('videoContainer');
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(() => showToast('Fullscreen not available'));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Mobile Menu
+    function toggleMobileMenu() {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+
+    // Tab Switch
+    function switchTab(el) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // Scroll Reveal
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Auto reveal on load
+    setTimeout(() => {
+      document.getElementById('heroReveal')?.classList.add('visible');
+      setTimeout(() => document.getElementById('playerReveal')?.classList.add('visible'), 200);
+      setTimeout(() => document.getElementById('iptvReveal')?.classList.add('visible'), 400);
+      setTimeout(() => document.getElementById('infoReveal')?.classList.add('visible'), 600);
+    }, 100);
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+      if (e.key === 'm' || e.key === 'M') {
+        video.muted = !video.muted;
+        showToast(video.muted ? '🔇 Muted' : '🔊 Unmuted');
+      }
+      if (e.key === '1') playChannel(0);
+      if (e.key === '2') playChannel(1);
     });
-  }
 
-  function buildGrid(group, query) {
-    var grid = document.getElementById('channelGrid'); grid.innerHTML = '';
-    var filtered = getFilteredList(group, query);
-    if(filtered.length === 0) { grid.innerHTML = '<div style="text-align:center;padding:20px;color:#555;grid-column:1/-1;">Not found</div>'; return; }
-    filtered.forEach(function(ch) {
-      var idx = channels.indexOf(ch); var isFav = favorites.indexOf(idx) !== -1; var el = document.createElement('div');
-      el.className = 'channel-card' + (idx === current ? ' active' : '');
-      var logoHtml = ch.logo ? 
-          '<img src="'+ch.logo+'" alt="'+ch.name+'" onerror="imgError(this, \''+ch.name.replace(/'/g, "\\'")+'\')">' : 
-          '<div class="no-logo">'+ch.name.charAt(0).toUpperCase()+'</div>';
-      el.innerHTML = '<button class="mobile-fav '+(isFav ? 'is-fav' : '')+'" onclick="event.stopPropagation(); window.toggleFav('+idx+')">'+(isFav ? '❤️' : '🤍')+'</button>' + logoHtml + '<div class="card-name">'+ch.name+'</div>';
-      el.onclick = function() { play(idx); }; grid.appendChild(el);
+    // Video state handlers
+    video.addEventListener('playing', () => {
+      document.getElementById('streamStatus').textContent = '● Live';
+      document.getElementById('loadingOverlay').classList.add('hidden');
     });
-  }
-
-  function play(idx) {
-    if (channels.length === 0) return; if (idx < 0 || idx >= channels.length) idx = 0;
-    if (skipOrigin === -1) skipOrigin = idx; else if (idx === skipOrigin) { clearTimeout(autoSkipTimer); document.getElementById('loadingOverlay').classList.remove('show'); document.getElementById('nowPlayingName').textContent = "❌ All failed"; return; }
-    current = idx; var ch  = channels[idx]; document.getElementById('nowPlayingName').textContent = ch.name;
-    var loading = document.getElementById('loadingOverlay'); var skipText = document.getElementById('skipText'); loading.classList.add('show'); skipText.textContent = "Loading...";
-    clearTimeout(autoSkipTimer); autoSkipTimer = setTimeout(function() { skipText.textContent = "⚠️ Skipping..."; nextChannel(); }, 20000);
-    vid.oncanplay = function() { clearTimeout(autoSkipTimer); skipOrigin = -1; loading.classList.remove('show'); };
-    vid.onerror = function() { clearTimeout(autoSkipTimer); skipText.textContent = "⚠️ Error..."; setTimeout(nextChannel, 1500); };
-    if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
-    if (Hls.isSupported()) { hlsInstance = new Hls({ enableWorker:true, lowLatencyMode:true }); hlsInstance.loadSource(ch.url); hlsInstance.attachMedia(vid); hlsInstance.on(Hls.Events.ERROR, function(e, d) { if (d.fatal) { clearTimeout(autoSkipTimer); setTimeout(nextChannel, 1500); } }); }
-    else if (vid.canPlayType('application/vnd.apple.mpegurl')) { vid.src = ch.url; } else { vid.src = ch.url; }
-    vid.play().catch(function(){});
-    if ('mediaSession' in navigator) { navigator.mediaSession.metadata = new MediaMetadata({ title: ch.name, artist: 'Media Player', artwork: ch.logo ? [{ src: ch.logo, sizes: '512x512', type: 'image/png' }] : [] }); }
-    recent = recent.filter(function(r) { return r !== idx; }); recent.unshift(idx); if(recent.length > 15) recent.pop(); safeSet('iptv_rec', recent); applyFilters(); 
-  }
-
-  window.toggleFav = function(idx) { 
-    if (favorites.indexOf(idx) !== -1) favorites = favorites.filter(function(i) { return i !== idx; }); else favorites.push(idx); 
-    safeSet('iptv_fav', favorites); applyFilters(); 
-  }
-  
-  window.nextChannel = function() { play((current + 1) % channels.length); };
-  window.prevChannel = function() { play((current - 1 + channels.length) % channels.length); };
-  window.togglePlay  = function() { if (vid.paused) vid.play(); else vid.pause(); };
-  window.togglePiP = function() { try { if (document.pictureInPictureElement) document.exitPictureInPicture(); else if (vid.requestPictureInPicture) vid.requestPictureInPicture(); } catch (err) {} };
-
-  function handleRemote(e) {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
-    var code = e.keyCode || e.which; var isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement);
-    if (isFullscreen) { if (code === 38 || code === 39 || e.key === 'ArrowUp' || e.key === 'ArrowRight') { e.preventDefault(); nextChannel(); } else if (code === 40 || code === 37 || e.key === 'ArrowDown' || e.key === 'ArrowLeft') { e.preventDefault(); prevChannel(); } }
-    else { if (code === 39 || e.key === 'ArrowRight') nextChannel(); if (code === 37 || e.key === 'ArrowLeft') prevChannel(); }
-    if (code === 32 || e.key === ' ') { e.preventDefault(); togglePlay(); }
-  }
-  window.addEventListener('keydown', handleRemote); window.addEventListener('keyup', handleRemote);
-  if ('mediaSession' in navigator) { navigator.mediaSession.setActionHandler('previoustrack', function() { prevChannel(); }); navigator.mediaSession.setActionHandler('nexttrack', function() { nextChannel(); }); }
-}
-</script>
+    video.addEventListener('waiting', () => {
+      document.getElementById('streamStatus').textContent = 'Buffering...';
+    });
+    video.addEventListener('pause', () => {
+      document.getElementById('streamStatus').textContent = 'Paused';
+    });
+  </script>
 </body>
 </html>
