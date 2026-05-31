@@ -379,6 +379,31 @@ https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/index.m3u8
 https://nomawnoijl.gpcdn.net/akash/delicious/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://tstatic.akash-go.com/cms-ui/images/custom-content/1778087459461.png" group-title="Live",Program Promo
 https://owrcovcrpy.gpcdn.net/bpk-tv/1720/output/index.m3u8
+#------------------- ⚽ New Sports & FIFA+ -------------------
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",FIFA+ (Live Matches)
+https://fnbavod.cdnrsa.hlscuevod.com/vod/hls/e1/01/17/GYB5OKcwMii8Ig4uOq19hg/master.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",Saudi Sports 1
+https://edge.tagaziotv.com/live/saudi_sports1/playlist.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",Saudi Sports 2
+https://edge.tagaziotv.com/live/saudi_sports2/playlist.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",Saudi Sports 3
+https://edge.tagaziotv.com/live/saudi_sports3/playlist.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",Dubai Sports
+https://stream.vtvraor.com/hls/dubaisports/playlist.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",K Sports 1
+https://iptv1.lactv.kz/KazSport/index.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",Trace Sports
+https://traceplaytrailceuliv.akamaized.net/live/trace_sport_pk_1/index.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",Fox Sports 506 (Backup)
+https://ffurg3qwsvilzg5h4hhdwuayyjltnl5zhv2a4caymnsymsnl.cdnexpress.live/fox_sports_506/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Eurosports.png" group-title="Live Cricket & Football",Eurosport 1
+https://dbe-zeus.akamaized.net/vcg_eng_1_smil:vcg_eng_1_web/playlist.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",Real Madrid TV
+https://rmtv24hdrtea1livermtvlive.akamaized.net/hls/live/2096886/rmtv24hdrtea1/rmtv24hdrtea1/rmtv24hdrtea1_live/rmtv24hdrtea1.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",Barca TV
+https://rakutentv-live.mg.lrmcdn.uk/live/SAT2/SAT2.m3u8
+#EXTINF:-1 tvg-logo="" group-title="Live Cricket & Football",NFL Network
+https://d2ij7r1u8sfc7d.cloudfront.net/nfl-network.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/T%20Sports.png" group-title="Live Cricket & Football",🔴 LIVE: BD vs IND Today
 https://new-live-link.com/match.m3u8
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/0/00/Logo_of_Deepto_TV.svg/1200px-Logo_of_Deepto_TV.svg.png" group-title="Live Cricket & Football",Deepto TV (Live Sports)
