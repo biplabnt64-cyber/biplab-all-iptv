@@ -415,15 +415,6 @@ https://d3u3pfhhvuad9k.cloudfront.net/playlist/amg00793-bbcstudios-bbcearta-lgus
 https://cdn1.logichost.in/ajmantv/live/playlist.m3u8
 #EXTINF:-1 tvg-logo="" group-title="Educational",Wild Earth
 https://wildearth-plex.amagi.tv/master.m3u8
-
-#------------------- 💻 Tech (প্রযুক্তি) -------------------
-#EXTINF:-1 tvg-logo="" group-title="Tech",Tech TV
-https://cdn-uw2-prod.tsv2.amagi.tv/linear/amgi-hd/techtv/playlist.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Tech",Gyan TV
-https://cdn-uw2-prod.tsv2.amagi.tv/linear/amgi-hd/gyantv/playlist.m3u8
-#EXTINF:-1 tvg-logo="" group-title="Tech",India Today Tech
-https://amg01448-samsungin-indiatoday-samsungin-ad-jucj.amagi.tv/playlist/amg01448-samsungin-indiatoday-samsungin/playlist.m3u8
-
 #------------------- 🎨 Kids/Anime (কার্টুন বা অ্যানিমে) -------------------
 #EXTINF:-1 tvg-logo="" group-title="Kids/Anime",ZB Cartoon
 https://server.zillarbarta.com/zbcatun/video.m3u8
