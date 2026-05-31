@@ -4,65 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rahmatullah Media Player</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src * data: https:; media-src * https: blob: http:; connect-src * https: http:;">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
 :root { --neon-cyan: #00ffff; --neon-pink: #ff00ff; --neon-green: #00ff88; --neon-red: #ff2244; --bg-dark: #050508; --bg-card: #0d0d14; --bg-panel: #0a0a10; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--bg-dark); color:white; font-family:'Rajdhani',sans-serif; min-height:100vh; }
-.header { background:var(--bg-panel); border-top:3px solid var(--neon-red); border-bottom:2px solid rgba(255,0,68,0.3); padding:12px 20px; display:flex; align-items:center; justify-content:space-between; }
-.header h1 { font-family:'Orbitron',sans-serif; font-size:clamp(14px,3.5vw,24px); background:linear-gradient(90deg,#00ffff,#00ff88,#ff00ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:hueRotate 4s linear infinite; letter-spacing:2px; }
+.header { background:var(--bg-panel); border-top:3px solid var(--neon-red); border-bottom:2px solid rgba(255,0,68,0.3); padding:12px 20px; display:flex; align-items:center; justify-content:center; gap: 15px; flex-wrap: wrap; }
+.header h1 { font-family:'Orbitron',sans-serif; font-size:clamp(16px,4vw,28px); background:linear-gradient(90deg,#00ffff,#00ff88,#ff00ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:hueRotate 4s linear infinite; letter-spacing:2px; }
+.live-match-btn { background: linear-gradient(90deg, #ff0044, #ff00ff); color: white; border: none; padding: 10px 22px; font-size: 15px; font-family: 'Orbitron', sans-serif; font-weight: bold; border-radius: 25px; cursor: pointer; animation: pulse 1.5s infinite; display: flex; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 0 15px rgba(255,0,68,0.5); }
+.live-match-btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255,0,68,0.8); }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 34, 68, 0.7); } 70% { box-shadow: 0 0 0 12px rgba(255, 34, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 34, 68, 0); } }
 @keyframes hueRotate { 0%{filter:hue-rotate(0deg);} 100%{filter:hue-rotate(360deg);} }
-
-/* ===== LIVE MATCH BUTTON ===== */
-.live-match-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 18px;
-  background: linear-gradient(135deg, rgba(255,34,68,0.15), rgba(255,0,255,0.1));
-  border: 1.5px solid var(--neon-red);
-  border-radius: 8px;
-  color: white;
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(10px, 2vw, 13px);
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.25s;
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.live-match-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--neon-red), var(--neon-pink));
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-.live-match-btn:hover::before { opacity: 1; }
-.live-match-btn:hover { transform: scale(1.05); box-shadow: 0 0 24px rgba(255,34,68,0.6), 0 0 8px rgba(255,0,255,0.3); }
-.live-match-btn span { position: relative; z-index: 1; }
-.live-dot {
-  width: 9px; height: 9px;
-  background: var(--neon-red);
-  border-radius: 50%;
-  animation: livePulse 1s ease-in-out infinite;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-}
-@keyframes livePulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255,34,68,0.8); transform: scale(1); }
-  50% { box-shadow: 0 0 0 6px rgba(255,34,68,0); transform: scale(1.2); }
-}
-/* ============================= */
-
 .app-wrapper { display:flex; height:calc(100vh - 58px); }
 .sidebar { width:280px; min-width:280px; background:var(--bg-panel); border-right:1px solid rgba(0,255,255,0.12); display:flex; flex-direction:column; overflow:hidden; }
 .sidebar-controls { padding:10px; border-bottom:1px solid rgba(0,255,255,0.1); display: flex; flex-direction: column; gap: 8px; }
@@ -117,25 +70,15 @@ video { width:100%; display:block; }
 .mobile-fav.is-fav { color: var(--neon-pink); background: rgba(255,0,255,0.2); }
 .footer { text-align:center; padding:9px; border-top:2px solid rgba(255,0,68,0.25); font-size:13px; color:#555; background:var(--bg-panel); flex-shrink:0; }
 .footer span { color:var(--neon-cyan); }
-@media(max-width:768px) { .sidebar { display:none; } .app-wrapper { flex-direction:column; height:auto; min-height:calc(100vh - 58px); } .main-content { overflow:visible; } .kbd-hint { display:none; } .transport { padding:8px 10px; gap:8px; } .t-btn { width:42px; height:42px; font-size:16px; } .t-btn.play-btn { width:48px; height:48px; font-size:20px; } .live-match-btn { padding: 7px 12px; } }
-
-.no-logo {
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
-  color: var(--neon-cyan);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; font-weight: bold; font-family: 'Orbitron', sans-serif;
-  border-radius: 7px;
-}
+@media(max-width:768px) { .sidebar { display:none; } .app-wrapper { flex-direction:column; height:auto; min-height:calc(100vh - 58px); } .main-content { overflow:visible; } .kbd-hint { display:none; } .transport { padding:8px 10px; gap:8px; } .t-btn { width:42px; height:42px; font-size:16px; } .t-btn.play-btn { width:48px; height:48px; font-size:20px; } }
+.no-logo { background: linear-gradient(135deg, #1a1a2e, #16213e); color: var(--neon-cyan); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; font-family: 'Orbitron', sans-serif; border-radius: 7px; }
 .channel-card .no-logo { font-size: 24px; width: 100%; height: 48px; }
 </style>
 </head>
 <body>
 <div class="header">
   <h1>⚡ Developed by Biplab</h1>
-  <a href="file:///C:/Users/LENOVO/Desktop/biplab.html#live" class="live-match-btn" target="_blank">
-    <div class="live-dot"></div>
-    <span>🏏 LIVE MATCH</span>
-  </a>
+  <button class="live-match-btn" onclick="goToLiveMatch()">🔴 LIVE MATCH</button>
 </div>
 <div class="app-wrapper">
   <aside class="sidebar" id="sidebar">
@@ -147,7 +90,7 @@ video { width:100%; display:block; }
   </aside>
   <div class="main-content">
     <div class="player-wrap">
-      <video id="video" autoplay controls crossorigin="anonymous" playsinline></video>
+      <video id="video" autoplay controls playsinline></video>
       <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><div class="skip-text" id="skipText">Loading...</div></div>
     </div>
     <div class="now-playing">
@@ -189,8 +132,7 @@ function initPlayer() {
 
   if (favorites.length > 0 && typeof favorites[0] === 'string') { favorites = []; safeSet('iptv_fav', favorites); }
 
-  var hiddenLink = atob("aHR0cHM6Ly9yYXcuZ2l0aHViYXVzZXJjb250ZW50LmNvbS9SYWtpYjQ5L1Jha2liaXB0di9yZWZzL2hlYWRzL21haW4vYXluYW90dC5tM3U=");
-  var sources = ["channels.txt", hiddenLink];
+  var sources = ["https://raw.githubusercontent.com/biplabnt64-cyber/iptv-/main/biplab.m3u"];
 
   function parseList(text) {
     var lines = text.split('\n');
@@ -234,6 +176,24 @@ function initPlayer() {
     buildSidebar(sideGrp, sideQ);
     buildGrid(mobGrp, mobQ);
   }
+
+  // ✅ FIX: "Live Match" → "Sports" (M3U তে group-title="Sports" আছে)
+  window.goToLiveMatch = function() {
+    var LIVE_GROUP = "Sports"; // আপনার M3U-তে Sports group-এ T Sports, Star Sports আছে
+    var sideGroup = document.getElementById('sideGroup');
+    var mobileGroup = document.getElementById('mobileGroup');
+
+    sideGroup.value = LIVE_GROUP;
+    mobileGroup.value = LIVE_GROUP;
+    applyFilters();
+
+    var liveChannels = getFilteredList(LIVE_GROUP, "");
+    if (liveChannels.length > 0) {
+      play(channels.indexOf(liveChannels[0]));
+    } else {
+      alert("Sports channels লোড হচ্ছে, একটু অপেক্ষা করুন...");
+    }
+  };
 
   function getFilteredList(group, query) {
     var list = channels;
@@ -286,11 +246,11 @@ function initPlayer() {
     if (skipOrigin === -1) skipOrigin = idx; else if (idx === skipOrigin) { clearTimeout(autoSkipTimer); document.getElementById('loadingOverlay').classList.remove('show'); document.getElementById('nowPlayingName').textContent = "❌ All failed"; return; }
     current = idx; var ch  = channels[idx]; document.getElementById('nowPlayingName').textContent = ch.name;
     var loading = document.getElementById('loadingOverlay'); var skipText = document.getElementById('skipText'); loading.classList.add('show'); skipText.textContent = "Loading...";
-    clearTimeout(autoSkipTimer); autoSkipTimer = setTimeout(function() { skipText.textContent = "⚠️ Skipping..."; nextChannel(); }, 7000);
+    clearTimeout(autoSkipTimer); autoSkipTimer = setTimeout(function() { skipText.textContent = "⚠️ Skipping..."; nextChannel(); }, 20000);
     vid.oncanplay = function() { clearTimeout(autoSkipTimer); skipOrigin = -1; loading.classList.remove('show'); };
-    vid.onerror = function() { clearTimeout(autoSkipTimer); skipText.textContent = "⚠️ Error..."; setTimeout(nextChannel, 800); };
+    vid.onerror = function() { clearTimeout(autoSkipTimer); skipText.textContent = "⚠️ Error..."; setTimeout(nextChannel, 1500); };
     if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
-    if (Hls.isSupported()) { hlsInstance = new Hls({ enableWorker:true, lowLatencyMode:true }); hlsInstance.loadSource(ch.url); hlsInstance.attachMedia(vid); hlsInstance.on(Hls.Events.ERROR, function(e, d) { if (d.fatal) { clearTimeout(autoSkipTimer); setTimeout(nextChannel, 800); } }); }
+    if (Hls.isSupported()) { hlsInstance = new Hls({ enableWorker:true, lowLatencyMode:true }); hlsInstance.loadSource(ch.url); hlsInstance.attachMedia(vid); hlsInstance.on(Hls.Events.ERROR, function(e, d) { if (d.fatal) { clearTimeout(autoSkipTimer); setTimeout(nextChannel, 1500); } }); }
     else if (vid.canPlayType('application/vnd.apple.mpegurl')) { vid.src = ch.url; } else { vid.src = ch.url; }
     vid.play().catch(function(){});
     if ('mediaSession' in navigator) { navigator.mediaSession.metadata = new MediaMetadata({ title: ch.name, artist: 'Media Player', artwork: ch.logo ? [{ src: ch.logo, sizes: '512x512', type: 'image/png' }] : [] }); }
