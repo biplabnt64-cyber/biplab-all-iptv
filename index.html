@@ -237,7 +237,7 @@ function initPlayer() {
     if (skipOrigin === -1) skipOrigin = idx; else if (idx === skipOrigin) { clearTimeout(autoSkipTimer); document.getElementById('loadingOverlay').classList.remove('show'); document.getElementById('nowPlayingName').textContent = "❌ All failed"; return; }
     current = idx; var ch  = channels[idx]; document.getElementById('nowPlayingName').textContent = ch.name;
     var loading = document.getElementById('loadingOverlay'); var skipText = document.getElementById('skipText'); loading.classList.add('show'); skipText.textContent = "Loading...";
-    clearTimeout(autoSkipTimer); autoSkipTimer = setTimeout(function() { skipText.textContent = "⚠️ Skipping..."; nextChannel(); }, 7000);
+    clearTimeout(autoSkipTimer); autoSkipTimer = setTimeout(function() { skipText.textContent = "⚠️ Skipping..."; nextChannel(); }, 20000);
     vid.oncanplay = function() { clearTimeout(autoSkipTimer); skipOrigin = -1; loading.classList.remove('show'); };
     vid.onerror = function() { clearTimeout(autoSkipTimer); skipText.textContent = "⚠️ Error..."; setTimeout(nextChannel, 800); };
     if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
