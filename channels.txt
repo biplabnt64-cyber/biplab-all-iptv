@@ -379,8 +379,11 @@ https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/index.m3u8
 https://nomawnoijl.gpcdn.net/akash/delicious/playlist.m3u8
 #EXTINF:-1 tvg-logo="https://tstatic.akash-go.com/cms-ui/images/custom-content/1778087459461.png" group-title="Live",Program Promo
 https://owrcovcrpy.gpcdn.net/bpk-tv/1720/output/index.m3u8
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/T%20Sports.png" group-title="Live Cricket & Football",🔴 LIVE: BD vs IND Today
-https://new-live-link.com/match.m3u8
+#------------------- 🏏🔴 Live Match IPL Final -------------------
+#EXTINF:-1 tvg-logo="" group-title="Live Match",IPL Live (Sony Ten)
+http://198.195.239.50:8095/SonyTenSports5/tracks-v1a1/mono.m3u8
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%201%40.jpeg" group-title="Live Match",Star Sports 1 HD (Live Match)
+http://tvn1.chowdhury-shaheb.com/starsport1/index.m3u8
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/0/00/Logo_of_Deepto_TV.svg/1200px-Logo_of_Deepto_TV.svg.png" group-title="Live Cricket & Football",Deepto TV (Live Sports)
 #------------------- 📚 Educational (শিক্ষামূলক) -------------------
 #EXTINF:-1 tvg-logo="" group-title="Educational",Animal Planet HD
