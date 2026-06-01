@@ -74,7 +74,7 @@
 
     .dev-by{font-family:'Orbitron',sans-serif;background:linear-gradient(90deg,#f59e0b,#ef4444,#a855f7,#3b82f6,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;font-weight:900}
 
-    /* ===== IPTV STYLES (Updated for Big Logos & PiP Mode) ===== */
+    /* ===== IPTV STYLES ===== */
     #iptvPage{--neon-cyan:#00ffff;--neon-pink:#ff00ff;--neon-green:#00ff88;--neon-red:#ff2244;--bg-dark:#050508;--bg-card:#0d0d14;--bg-panel:#0a0a10;background:var(--bg-dark);font-family:'Rajdhani',sans-serif}
     #iptvPage .iptv-header{background:linear-gradient(135deg,var(--bg-panel),#1a0a30);border-top:3px solid var(--neon-red);border-bottom:2px solid rgba(255,0,68,.3);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
     #iptvPage .iptv-header h1{font-family:'Orbitron',sans-serif;font-size:clamp(12px,3vw,18px);background:linear-gradient(90deg,#00ffff,#00ff88,#ff00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:hueRotate 4s linear infinite;letter-spacing:2px}
@@ -121,7 +121,6 @@
     #iptvPage .mobile-section{display:flex;flex:1;flex-direction:column;overflow:hidden}
     #iptvPage .mobile-controls{padding:9px 11px;background:var(--bg-panel);border-bottom:1px solid rgba(0,255,255,.1);display:flex;flex-direction:column;gap:8px}
     
-    /* বড় লোগোর জন্য আপডেটেড গ্রিড এবং কার্ড */
     #iptvPage .channel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;padding:10px;overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:rgba(0,255,255,.3) transparent}
     #iptvPage .channel-card{background:var(--bg-card);border-radius:12px;padding:8px;height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,.08);gap:6px;position:relative}
     #iptvPage .channel-card:hover{transform:scale(1.05);box-shadow:0 0 18px rgba(255,0,255,.4);border-color:rgba(255,0,255,.4)}
@@ -134,7 +133,6 @@
     #iptvPage .iptv-footer{text-align:center;padding:9px;border-top:2px solid rgba(255,0,68,.25);font-size:13px;color:#555;background:var(--bg-panel);flex-shrink:0}
     #iptvPage .iptv-footer span{color:var(--neon-cyan)}
 
-    /* PiP মোড - ভিডিও প্লেয়ার লুকিয়ে পুরো জায়গা চ্যানেল লিস্ট নেবে */
     #iptvPage.pip-mode .player-wrap,
     #iptvPage.pip-mode .now-playing,
     #iptvPage.pip-mode .transport {
@@ -149,7 +147,6 @@
       #iptvPage .transport{padding:8px 10px;gap:8px}
       #iptvPage .t-btn{width:42px;height:42px;font-size:16px}
       #iptvPage .t-btn.play-btn{width:48px;height:48px;font-size:20px}
-      /* মোবাইলের জন্য গ্রিড এবং বড় লোগো */
       #iptvPage .channel-grid{grid-template-columns:repeat(3,1fr);gap:8px}
       #iptvPage .channel-card{height:120px}
       #iptvPage .channel-card img{max-height:80px}
@@ -309,7 +306,7 @@
     </div>
   </div>
 
-  <!-- ==================== ALL IP TV (With Big Logos, PiP Mode & Category Sync Fix) ==================== -->
+  <!-- ==================== ALL IP TV ==================== -->
   <div id="iptvPage" class="page">
     <div class="iptv-header">
       <button class="back-btn" onclick="goBack('homePage')" style="border-color:rgba(0,255,255,.3);color:var(--neon-cyan)"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Back</button>
@@ -359,7 +356,8 @@
     function showToast(m){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
     function openObiram(){window.open('https://obiramtvlive.pages.dev/','_blank')}
 
-    const iplCh=[{name:'Sony Ten 5',url:'http://198.195.239.50:8095/SonyTenSports5/tracks-v1a1/mono.m3u8'},{name:'Star Sports 1 HD',url:'http://tvn1.chowdhury-shaheb.com/starsport1/index.m3u8'}];
+    // এখানে http:// এর বদলে https:// ব্যবহার করা হয়েছে
+    const iplCh=[{name:'Sony Ten 5',url:'https://198.195.239.50:8095/SonyTenSports5/tracks-v1a1/mono.m3u8'},{name:'Star Sports 1 HD',url:'https://tvn1.chowdhury-shaheb.com/starsport1/index.m3u8'}];
     let curIpl=-1,iplHls=null;const iplV=document.getElementById('videoPlayer');let ppT=null;
     function togglePlayPause(){const w=document.getElementById('welcomeOverlay'),e=document.getElementById('errorOverlay'),l=document.getElementById('loadingOverlay');if(!w.classList.contains('hidden')||!e.classList.contains('hidden')||!l.classList.contains('hidden'))return;iplV.paused?iplV.play().catch(()=>{}):iplV.pause()}
     function showPP(p){const b=document.getElementById('playPauseBtn');document.getElementById('playIcon').style.display=p?'block':'none';document.getElementById('pauseIcon').style.display=p?'none':'block';document.getElementById('playIconS').style.display=p?'block':'none';document.getElementById('pauseIconS').style.display=p?'none':'block';b.classList.add('show');clearTimeout(ppT);ppT=setTimeout(()=>b.classList.remove('show'),700)}
@@ -369,7 +367,7 @@
     function toggleFullscreen(){const c=document.getElementById('videoContainer');if(!document.fullscreenElement)c.requestFullscreen().catch(()=>{});else document.exitFullscreen()}
     iplV.addEventListener('play',updIpl);iplV.addEventListener('pause',updIpl);iplV.addEventListener('playing',()=>{document.getElementById('streamStatus').textContent='● Live';document.getElementById('loadingOverlay').classList.add('hidden');updIpl()});
 
-    // ===== IPTV ENGINE (With PiP Full Screen Mode & Time/Fix Updates) =====
+    // ===== IPTV ENGINE =====
     function safeGet(key, def) { try { return JSON.parse(localStorage.getItem(key)) || def; } catch(e) { return def; } }
     function safeSet(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
 
@@ -411,7 +409,7 @@
         '#EXTINF:-1 tvg-logo="https://s4.gifyu.com/images/image5c0bfa6b281be803.png" group-title="Bangla",BanglaVision',
         'https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://s4.gifyu.com/images/image534fa27d7683f33d.png" group-title="Bangla",Ekushey TV',
-        'http://210.4.72.204/hls-live/livepkgr/_definst_/liveevent/livestream3.m3u8',
+        'https://210.4.72.204/hls-live/livepkgr/_definst_/liveevent/livestream3.m3u8',
         '#EXTINF:-1 tvg-logo="https://cdn.tvpassport.com/image/station/240x135/channel-i-bangla.png" group-title="Bangla",Channel I',
         'https://owrcovcrpy.gpcdn.net/bpk-tv/1723/output/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/3/31/Deepto_TV_logo.png" group-title="Bangla",Deepto TV',
@@ -431,7 +429,7 @@
         '#EXTINF:-1 tvg-logo="https://i.postimg.cc/1tmcNHW3/Star-Jalsha-HD.jpg" group-title="Bangla",Star Jalsha HD',
         'https://dhoomtv.xyz/live/P4B9TB9xR8/humongous2tonight/23218.ts',
         '#EXTINF:-1 tvg-logo="https://i.postimg.cc/MZQcv8Hm/Bangla-Jago.jpg" group-title="Bangla",Bangla Jago',
-        'http://banglajagotv.livebox.co.in:80/banglajagohls/24x7.m3u8',
+        'https://banglajagotv.livebox.co.in/banglajagohls/24x7.m3u8',
         '#EXTINF:-1 tvg-logo="https://i.postimg.cc/3wPnKf19/Sony-Aath.jpg" group-title="Bangla",R Plus News',
         'https://thelegitpro.in/pntv/rplusnews24x7/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://i.postimg.cc/tTNPLBMs/24-Ghanta.jpg" group-title="Bangla",TV9 Bangla',
@@ -441,7 +439,7 @@
         '#EXTINF:-1 tvg-logo="https://tplay.live/originals/bengali-beats/bengali-beats.png" group-title="Bangla",Bengla Beats',
         'https://tplay.live/originals/bengali-beats/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/BTV%20National.png" group-title="Bangla",BTV National',
-        'http://103.229.254.25:7001/play/a064/index.m3u8',
+        'https://103.229.254.25:7001/play/a064/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/BTV%20National.png" group-title="Bangla",BTV Chattogram',
         'https://www.btvlive.gov.bd/live/37f2df30-3edf-42f3-a2ee-6185002c841c/BD/a707f2dc-9704-413a-a67c-17c64a77c350/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/BTV%20National.png" group-title="Bangla",BTV Sangsad',
@@ -451,13 +449,13 @@
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/T%20Sports.png" group-title="Bangla",T Sports',
         'https://live.tsports.com/mobile_hls/tsports_live_2/playlist.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Gazi%20TV.jpg" group-title="Bangla",Gazi TV',
-        'http://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8',
+        'https://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Maasranga%20TV.png" group-title="Bangla",Maasranga TV',
         'https://owrcovcrpy.gpcdn.net/bpk-tv/1722/output/1722.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/SATV.png" group-title="Bangla",SATV',
         'https://owrcovcrpy.gpcdn.net/bpk-tv/1720/output/1720.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Mohona%20TV.png" group-title="Bangla",Mohona TV',
-        'http://103.229.254.25:7001/play/a05t/index.m3u8',
+        'https://103.229.254.25:7001/play/a05t/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Desh%20TV.png" group-title="Bangla",Desh TV',
         'https://bozztv.com/rongo/rongo-DeshTV/tracks-v1a1/mono.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Channel%209.png" group-title="Bangla",Channel 9',
@@ -469,11 +467,11 @@
         '#EXTINF:-1 tvg-logo="https://i.postimg.cc/ZnD8CtvQ/BBC.jpg" group-title="Bangla",DBC News HD',
         'https://owrcovcrpy.gpcdn.net/bpk-tv/1728/output/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/zee%20Bangla.png" group-title="Bangla",Zee Bangla HD',
-        'http://103.161.153.165:8000/play/zeebnhd/index.m3u8',
+        'https://103.161.153.165:8000/play/zeebnhd/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Colors%20Bangla.png" group-title="Bangla",Colors Bangla',
-        'http://103.229.254.25:7001/play/a076/index.m3u8',
+        'https://103.229.254.25:7001/play/a076/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Sun%20Bangla.png" group-title="Bangla",Sun Bangla HD',
-        'http://103.161.153.165:8000/play/a03k/index.m3u8',
+        'https://103.161.153.165:8000/play/a03k/index.m3u8',
         '#EXTINF:-1 tvg-logo="" group-title="Indian",Sony Pal',
         'https://spt-sonypal-1-us.lg.wurl.tv/playlist.m3u8',
         '#EXTINF:-1 tvg-logo="" group-title="Indian",B4U Movies',
@@ -491,15 +489,15 @@
         '#EXTINF:-1 tvg-logo="" group-title="Music",YRF Music HD',
         'https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01412-xiaomiasia-yrfmusic-xiaomi/playlist.m3u8',
         '#EXTINF:-1 tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPCvTmUhiKDs4ehoVpFLh7xwdCNK2-N_gNFqnaOM4YRQ&s=10" group-title="Sports",Live Sports 1',
-        'http://198.195.239.50:8095/Eurosport/index.m3u8',
+        'https://198.195.239.50:8095/Eurosport/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPCvTmUhiKDs4ehoVpFLh7xwdCNK2-N_gNFqnaOM4YRQ&s=10" group-title="Sports",PTV Sports',
-        'http://198.195.239.50:8095/PTV-kutta/video.m3u8',
+        'https://198.195.239.50:8095/PTV-kutta/video.m3u8',
         '#EXTINF:-1 tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPCvTmUhiKDs4ehoVpFLh7xwdCNK2-N_gNFqnaOM4YRQ&s=10" group-title="Sports",T Sports (Cricket)',
         'https://live.tsports.com/mobile_hls/tsports_live_1/playlist.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%201%40.jpeg" group-title="Sports",Star Sports 1 HD',
-        'http://tvn1.chowdhury-shaheb.com/starsport1/index.m3u8',
+        'https://tvn1.chowdhury-shaheb.com/starsport1/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Sports%202%40.jpeg" group-title="Sports",Star Sports 2 HD Hindi',
-        'http://tvn1.chowdhury-shaheb.com/starsport2/index.m3u8',
+        'https://tvn1.chowdhury-shaheb.com/starsport2/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://is.gd/imZMIp" group-title="News",DW NEWS',
         'https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream02/streamPlaylist.m3u8',
         '#EXTINF:-1 tvg-logo="https://is.gd/ywX5PG" group-title="News",CNN NEWS',
@@ -511,19 +509,19 @@
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Al%20Jazeera%20.png" group-title="News",Aljazeera',
         'https://owrcovcrpy.gpcdn.net/bpk-tv/1721/output/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Jalshamovieshd.jpg" group-title="Movies",Jalsha Movies',
-        'http://198.195.239.50:8095/JalshaMovies/tracks-v1a1/mono.m3u8',
+        'https://198.195.239.50:8095/JalshaMovies/tracks-v1a1/mono.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Colors%20Bangla%20Cinema.png" group-title="Movies",Colors Bangla Cinema',
-        'http://198.195.239.50:8095/ColorsBanglaChinema/tracks-v1a1/mono.m3u8',
+        'https://198.195.239.50:8095/ColorsBanglaChinema/tracks-v1a1/mono.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Star%20Gold.png" group-title="Movies",Star Gold HD',
-        'http://103.229.254.25:7001/play/a0dd/index.m3u8',
+        'https://103.229.254.25:7001/play/a0dd/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Colors%20Cineplax.png" group-title="Movies",Colors Cineplex',
-        'http://198.195.239.50:8095/ColorsCineplex/index.m3u8',
+        'https://198.195.239.50:8095/ColorsCineplex/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/Discovery%20.png" group-title="Documentary",Discovery Bangla',
-        'http://202.70.146.135:8000/play/a05z/index.m3u8',
+        'https://202.70.146.135:8000/play/a05z/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Animal_Planet_logo.svg/1280px-Animal_Planet_logo.svg.png" group-title="Documentary",Animal Planet HD',
         'https://tiger-hub.vercel.app@vodzong.mjunoon.tv:8087/streamtest/Animal-Planet-158-3/playlist.m3u8',
         '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/subirkumarpaul/Logo/main/National%20Geographic%20Channel.png" group-title="Documentary",Nat Geo HD',
-        'http://103.229.254.25:7001/play/a038/index.m3u8',
+        'https://103.229.254.25:7001/play/a038/index.m3u8',
         '#EXTINF:-1 tvg-logo="https://i.postimg.cc/FFwSjdzS/Pogo.jpg" group-title="Kids",ZB Cartoon',
         'https://server.zillarbarta.com/zbcatun/video.m3u8',
         '#EXTINF:-1 tvg-logo="h" group-title="Kids",Tom & Jarry',
@@ -585,7 +583,6 @@
         var sideSearchEl = document.getElementById('sideSearch');
         var mobSearchEl = document.getElementById('mobileSearch');
 
-        // সিঙ্ক করার সিস্টেম: নিচের ক্যাটাগরি পরিবর্তন হলে উপরেও বদলাবে এবং উপরেরটা পরিবর্তন হলে নিচেতেও বদলাবে
         if (source === 'side') {
           mobGrpEl.value = sideGrpEl.value;
           mobSearchEl.value = sideSearchEl.value;
@@ -593,7 +590,6 @@
           sideGrpEl.value = mobGrpEl.value;
           sideSearchEl.value = mobSearchEl.value;
         } else {
-          // ডিফল্ট সিঙ্ক
           mobGrpEl.value = sideGrpEl.value;
         }
 
@@ -666,10 +662,10 @@
         autoSkipTimer = setTimeout(function() {
             skipText.textContent = "⚠️ Channel failed. Skipping...";
             nextChannel(); 
-        }, 3000); // লোডিং টাইম ৩ সেকেন্ড (৩০০০ মিলিসেকেন্ড)
+        }, 3000); 
 
         vid.oncanplay = function() { clearTimeout(autoSkipTimer); skipOrigin = -1; loading.classList.remove('show'); };
-        vid.onerror = function() { clearTimeout(autoSkipTimer); skipText.textContent = "⚠️ Error. Skipping..."; setTimeout(nextChannel, 400); }; // এরর স্কিপ টাইম ০.৪ সেকেন্ড (৪০০ মিলিসেকেন্ড)
+        vid.onerror = function() { clearTimeout(autoSkipTimer); skipText.textContent = "⚠️ Error. Skipping..."; setTimeout(nextChannel, 400); };
 
         if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
 
@@ -677,7 +673,7 @@
           hlsInstance = new Hls({ enableWorker:true, lowLatencyMode:true });
           hlsInstance.loadSource(ch.url);
           hlsInstance.attachMedia(vid);
-          hlsInstance.on(Hls.Events.ERROR, function(e, d) { if (d.fatal) { clearTimeout(autoSkipTimer); setTimeout(nextChannel, 400); } }); // এরর স্কিপ টাইম ০.৪ সেকেন্ড (৪০০ মিলিসেকেন্ড)
+          hlsInstance.on(Hls.Events.ERROR, function(e, d) { if (d.fatal) { clearTimeout(autoSkipTimer); setTimeout(nextChannel, 400); } });
         } else if (vid.canPlayType('application/vnd.apple.mpegurl')) {
           vid.src = ch.url;
         } else {
@@ -714,7 +710,6 @@
         } catch (err) {}
       };
 
-      // PiP চালু হলে প্লেয়ার লুকানো এবং পুরো স্ক্রিনে বড় লোগো দেখানোর জন্য ইভেন্ট লিসেনার
       vid.addEventListener('enterpictureinpicture', function() {
         document.getElementById('iptvPage').classList.add('pip-mode');
       });
