@@ -52,6 +52,13 @@
 
     .dev-by{font-family:'Orbitron',sans-serif;background:linear-gradient(90deg,#f59e0b,#ef4444,#a855f7,#3b82f6,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;font-weight:900}
 
+    /* ===== PROFESSIONAL TICKER STYLES ===== */
+    .ticker-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(90deg,rgba(10,5,30,.98),rgba(20,10,40,.98));border-top:2px solid rgba(245,158,11,.5);display:flex;align-items:center;z-index:50;height:40px;overflow:hidden;box-shadow:0 -5px 20px rgba(0,0,0,.7)}
+    .ticker-label{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;padding:0 16px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap;display:flex;align-items:center;gap:7px;flex-shrink:0;height:100%;box-shadow:4px 0 15px rgba(239,68,68,.5);z-index:2}
+    .ticker-content{flex:1;overflow:hidden;position:relative;height:100%;display:flex;align-items:center;mask-image:linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);-webkit-mask-image:linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)}
+    .ticker-text{display:inline-block;white-space:nowrap;font-size:14px;font-weight:600;color:#fbbf24;text-shadow:0 0 10px rgba(251,191,36,.5);animation:tickerScroll 28s linear infinite;padding-left:20px}
+    @keyframes tickerScroll{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+
     /* ===== IPTV STYLES ===== */
     #iptvPage{--neon-cyan:#00ffff;--neon-pink:#ff00ff;--neon-green:#00ff88;--neon-red:#ff2244;--bg-dark:#050508;--bg-card:#0d0d14;--bg-panel:#0a0a10;background:var(--bg-dark);font-family:'Rajdhani',sans-serif}
     #iptvPage .iptv-header{background:linear-gradient(135deg,var(--bg-panel),#1a0a30);border-top:3px solid var(--neon-red);border-bottom:2px solid rgba(255,0,68,.3);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
@@ -132,7 +139,7 @@
 <body>
 
   <!-- ==================== HOME ==================== -->
-  <div id="homePage" class="page active" style="background:linear-gradient(135deg,#0f0a2e,#1a0533,#0a1a3e,#0f0a2e);min-height:100vh">
+  <div id="homePage" class="page active" style="background:linear-gradient(135deg,#0f0a2e,#1a0533,#0a1a3e,#0f0a2e);min-height:100vh;padding-bottom:48px;">
     <nav style="background:rgba(15,10,46,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.05)" class="sticky top-0 z-50">
       <div class="max-w-5xl mx-auto px-4 flex items-center justify-between h-14">
         <div class="flex items-center gap-3">
@@ -160,10 +167,10 @@
         </div>
       </div>
       <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-2"><span class="shimmer-text">Biplab TV</span></h1>
-      <p class="dev-by text-sm sm:text-base tracking-[4px] mb-2">DEVELOPED BY BIPLAB</p>
-      <p class="text-purple-300/50 text-xs sm:text-sm max-w-sm mx-auto mb-7">আপনার প্রিয় চ্যানেল লাইভ দেখুন — ক্রিকেট, ফুটবল, মুভি, নিউজ সব এক জায়গায়!</p>
+      <p class="dev-by text-sm sm:text-base tracking-[4px] mb-7">DEVELOPED BY BIPLAB</p>
 
       <div class="grid grid-cols-3 gap-3 sm:gap-5 w-full max-w-lg mx-auto">
+        <!-- Sports Box -->
         <div class="home-box box-sports p-4 sm:p-5 flex flex-col items-center text-center min-h-[150px] sm:min-h-[185px] justify-center" onclick="window.open('https://iptvsakib.blogspot.com/','_blank')">
           <div class="relative z-10 flex flex-col items-center">
             <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-500/15 border border-amber-500/25 flex items-center justify-center mb-2.5"><span class="text-2xl sm:text-3xl">🏆</span></div>
@@ -171,26 +178,30 @@
             <h2 class="text-xs sm:text-base font-black">Sports</h2><p class="text-[8px] sm:text-[9px] text-white/40 mt-0.5">Cricket & Football</p>
           </div>
         </div>
+        <!-- All IP TV Box -->
         <div class="home-box box-iptv p-4 sm:p-5 flex flex-col items-center text-center min-h-[150px] sm:min-h-[185px] justify-center" onclick="goToPage('iptvPage')">
           <div class="relative z-10 flex flex-col items-center">
             <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-purple-500/15 border border-purple-500/25 flex items-center justify-center mb-2.5"><span class="text-2xl sm:text-3xl">🌐</span></div>
-            <span class="px-2 py-0.5 rounded bg-purple-500/15 border border-purple-500/25 text-purple-300 text-[9px] font-bold mb-1">160+</span>
+            <div class="flex items-center gap-1 mb-1"><span class="w-1.5 h-1.5 bg-red-400 rounded-full live-dot"></span><span class="live-badge text-[8px]">LIVE</span></div>
             <h2 class="text-xs sm:text-base font-black">All IP TV</h2>
           </div>
         </div>
+        <!-- Obiram TV Box -->
         <div class="home-box box-obiram p-4 sm:p-5 flex flex-col items-center text-center min-h-[150px] sm:min-h-[185px] justify-center" onclick="openObiram()">
           <div class="relative z-10 flex flex-col items-center">
             <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-2.5" style="background:rgba(0,255,255,.1);border:1px solid rgba(0,255,255,.25)"><span class="text-2xl sm:text-3xl">📡</span></div>
-            <span class="px-2 py-0.5 rounded text-[9px] font-bold mb-1" style="background:rgba(0,255,255,.1);border:1px solid rgba(0,255,255,.25);color:#00ffff">LIVE</span>
+            <div class="flex items-center gap-1 mb-1"><span class="w-1.5 h-1.5 bg-red-400 rounded-full live-dot"></span><span class="live-badge text-[8px]">LIVE</span></div>
             <h2 class="text-xs sm:text-base font-black" style="color:#e0f7fa">অবিরাম টিভি</h2>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="mt-9 mb-4">
-        <div class="w-24 h-[2px] mx-auto mb-4" style="background:linear-gradient(90deg,transparent,#a855f7,#f59e0b,transparent)"></div>
-        <p class="dev-by text-lg sm:text-xl tracking-[6px]">DEVELOPED BY BIPLAB</p>
-        <div class="w-24 h-[2px] mx-auto mt-4" style="background:linear-gradient(90deg,transparent,#f59e0b,#a855f7,transparent)"></div>
+    <!-- Professional TV Ticker -->
+    <div id="homeTicker" class="ticker-bar">
+      <div class="ticker-label"><span class="w-2 h-2 bg-white rounded-full live-dot"></span> 🔴 LIVE</div>
+      <div class="ticker-content">
+        <div class="ticker-text">Biplab TV - Sports, Movies, News, Entertainment একসাথে এক জায়গায় ★  বিজ্ঞাপন ছাড়া টিভি উপভোগ করতে All IPTV মেনুতে প্রবেশ করুন ★  আমাদের সাথে থাকার জন্য ধন্যবাদ ❤️</div>
       </div>
     </div>
   </div>
@@ -240,8 +251,26 @@
   <div class="toast" id="toast"><span id="toastMsg"></span></div>
 
   <script>
-    function goToPage(p){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.getElementById(p).classList.add('active');window.scrollTo(0,0)}
-    function goBack(p){const v=document.getElementById('iptvVideo');if(v&&!v.paused)v.pause();goToPage(p);showToast('⏸ Video Paused')}
+    function goToPage(p){
+      document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
+      document.getElementById(p).classList.add('active');
+      window.scrollTo(0,0);
+      
+      var ticker = document.getElementById('homeTicker');
+      if(ticker) ticker.style.display = (p === 'homePage') ? 'flex' : 'none';
+
+      if (p === 'iptvPage' && window.triggerIptvAutoPlay) {
+        window.triggerIptvAutoPlay();
+      }
+    }
+
+    function goBack(p){
+      const v=document.getElementById('iptvVideo');
+      if(v&&!v.paused)v.pause();
+      goToPage(p);
+      showToast('⏸ Video Paused');
+    }
+
     function showToast(m){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
     function openObiram(){window.open('https://obiramtvlive.pages.dev/','_blank')}
 
@@ -254,7 +283,7 @@
     function startIPTV() {
       var playlistUrl = "https://raw.githubusercontent.com/Rakib49/Rakibiptv/refs/heads/main/aynaott.m3u";
       var channels = [];
-      var current = 0;
+      var current = -1;
       var hlsInstance = null;
       var vid = document.getElementById('iptvVideo');
       
@@ -442,7 +471,16 @@
       function initializeApp() {
         populateGroups();
         applyFilters(); 
-        if (channels.length) play(0);
+        
+        window.triggerIptvAutoPlay = function() {
+          if (channels.length > 0 && current === -1) {
+            play(0);
+          }
+        };
+
+        if (document.getElementById('iptvPage').classList.contains('active')) {
+          window.triggerIptvAutoPlay();
+        }
       }
 
       function populateGroups() {
